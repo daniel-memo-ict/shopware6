@@ -542,5 +542,14 @@
 
             <tag name="shopware.system_check"/>
         </service>
+
+        <service id="Shopware\Storefront\Twig\PreRenderEventListener">
+            <tag name="kernel.event_listener" />
+            <argument type="service" id="Shopware\Core\Framework\Adapter\Twig\TemplateFinder"/>
+        </service>
+
+        <service id="Shopware\Storefront\Twig\Components\Carousel">
+            <tag name="twig.component" />
+        </service>
     </services>
 </container>
