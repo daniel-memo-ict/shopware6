@@ -56,10 +56,11 @@ class StoreApiSeoResolverTest extends TestCase
         );
 
         $productEntity = $this->createProductEntity();
+        $product1 = $this->createProductEntity('random-1');
         $response = new ProductListResponse(new EntitySearchResult(
             'product',
             1,
-            new ProductCollection([$productEntity]),
+            new ProductCollection([$productEntity, $product1]),
             null,
             new Criteria(),
             Context::createDefaultContext(),
@@ -78,6 +79,57 @@ class StoreApiSeoResolverTest extends TestCase
         $storeApiSeoResolver->addSeoInformation($event);
 
         static::assertNotEmpty($productEntity->getSeoUrls());
+    }
+
+    public function testAddSeoInformationWithExtensions(): void
+    {
+        $request = new Request();
+        $request->headers->set(PlatformRequest::HEADER_INCLUDE_SEO_URLS, 'true');
+        $request->attributes->set(
+            PlatformRequest::ATTRIBUTE_SALES_CHANNEL_CONTEXT_OBJECT,
+            $this->createMock(SalesChannelContext::class),
+        );
+
+        $productEntity = $this->createProductEntity();
+        $searchResult = new EntitySearchResult(
+            'product',
+            1,
+            new ProductCollection([$productEntity]),
+            null,
+            new Criteria(),
+            Context::createDefaultContext(),
+        );
+
+        $productExtension = $this->createProductEntity('random-1');
+
+        $result = new MockSearchResult();
+        $result->addSearch(new EntitySearchResult(
+            'product',
+            1,
+            new ProductCollection([$productExtension]),
+            null,
+            new Criteria(),
+            Context::createDefaultContext(),
+        ), 'product');
+
+        $searchResult->addExtension('multiSearchResult', $result);
+        $response = new ProductListResponse($searchResult);
+
+        $event = new ResponseEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST,
+            $response
+        );
+
+        static::assertEmpty($productEntity->getSeoUrls());
+        static::assertEmpty($productExtension->getSeoUrls());
+
+        $storeApiSeoResolver = $this->createStoreApiSeoResolver();
+        $storeApiSeoResolver->addSeoInformation($event);
+
+        static::assertNotEmpty($productEntity->getSeoUrls());
+        static::assertNotEmpty($productExtension->getSeoUrls());
     }
 
     public function testResponseIsNotStoreApiResponse(): void
@@ -155,10 +207,10 @@ class StoreApiSeoResolverTest extends TestCase
         $storeApiSeoResolver->addSeoInformation($event);
     }
 
-    public function createProductEntity(): SalesChannelProductEntity
+    public function createProductEntity(?string $identifier = null): SalesChannelProductEntity
     {
         $productEntity = new SalesChannelProductEntity();
-        $productEntity->setUniqueIdentifier('random');
+        $productEntity->setUniqueIdentifier($identifier ?? 'random');
 
         return $productEntity;
     }
@@ -183,10 +235,14 @@ class StoreApiSeoResolverTest extends TestCase
         $seoUrlEntity->setUniqueIdentifier('seo-url');
         $seoUrlEntity->setForeignKey('random');
 
+        $seoUrlExtension = new SeoUrlEntity();
+        $seoUrlExtension->setUniqueIdentifier('seo-url-1');
+        $seoUrlExtension->setForeignKey('random-1');
+
         $entitySearchResult = new EntitySearchResult(
             'seoUrl',
-            1,
-            new SeoUrlCollection([$seoUrlEntity]),
+            2,
+            new SeoUrlCollection([$seoUrlEntity, $seoUrlExtension]),
             null,
             new Criteria(),
             Context::createDefaultContext(),

@@ -96,6 +96,18 @@ class StoreApiSeoResolver implements EventSubscriberInterface
             foreach ($struct->getEntities() as $entity) {
                 $this->findStruct($data, $entity);
             }
+
+            foreach ($struct->getExtensions() as $extension) {
+                if (!$extension instanceof SeoUrlAwareExtensionInterface) {
+                    continue;
+                }
+
+                foreach ($extension->getEntities() as $entityData) {
+                    foreach ($entityData as $entity) {
+                        $this->findStruct($data, $entity);
+                    }
+                }
+            }
         }
 
         if ($struct instanceof Collection) {
