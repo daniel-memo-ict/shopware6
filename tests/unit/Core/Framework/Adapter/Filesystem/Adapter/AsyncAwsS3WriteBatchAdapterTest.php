@@ -5,6 +5,8 @@ namespace Shopware\Tests\Unit\Core\Framework\Adapter\Filesystem\Adapter;
 use AsyncAws\Core\Test\ResultMockFactory;
 use AsyncAws\S3\Result\PutObjectOutput;
 use AsyncAws\S3\S3Client;
+use League\Flysystem\AsyncAwsS3\PortableVisibilityConverter;
+use League\Flysystem\Visibility;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Framework\Adapter\Filesystem\Adapter\AsyncAwsS3WriteBatchAdapter;
@@ -33,11 +35,12 @@ class AsyncAwsS3WriteBatchAdapterTest extends TestCase
                 'Bucket' => 'test',
                 'Key' => 'test.txt',
                 'Body' => $sourceFile,
+                'ACL' => 'public-read',
                 'ContentType' => 'text/plain',
             ])
             ->willReturn($result);
 
-        $adapter = new AsyncAwsS3WriteBatchAdapter($s3Client, 'test');
+        $adapter = new AsyncAwsS3WriteBatchAdapter($s3Client, 'test', '', new PortableVisibilityConverter());
         $adapter->writeBatch(new CopyBatchInput($sourceFile, ['test.txt']));
     }
 
@@ -55,11 +58,12 @@ class AsyncAwsS3WriteBatchAdapterTest extends TestCase
                 static::assertSame('test', $input['Bucket']);
                 static::assertSame('test.txt', $input['Key']);
                 static::assertSame('text/plain', $input['ContentType']);
+                static::assertSame('public-read', $input['ACL']);
 
                 return $result;
             });
 
-        $adapter = new AsyncAwsS3WriteBatchAdapter($s3Client, 'test');
+        $adapter = new AsyncAwsS3WriteBatchAdapter($s3Client, 'test', '', new PortableVisibilityConverter());
 
         $adapter->writeBatch(new CopyBatchInput($tmpFile, ['test.txt']));
     }
@@ -72,7 +76,7 @@ class AsyncAwsS3WriteBatchAdapterTest extends TestCase
             ->expects($this->never())
             ->method('putObject');
 
-        $adapter = new AsyncAwsS3WriteBatchAdapter($s3Client, 'test');
+        $adapter = new AsyncAwsS3WriteBatchAdapter($s3Client, 'test', '', new PortableVisibilityConverter());
         $adapter->writeBatch(new CopyBatchInput('invalid', ['test.txt']));
     }
 }
