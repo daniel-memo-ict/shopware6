@@ -1068,6 +1068,7 @@ class SalesChannelProxyControllerTest extends TestCase
             $orderPrivileges = [
                 'api_proxy_switch-customer',
                 'order:create',
+                'order:update',
                 'order_customer:create',
                 'order_address:create',
                 'order_delivery:create',
