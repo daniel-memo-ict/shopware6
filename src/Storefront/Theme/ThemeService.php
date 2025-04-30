@@ -300,15 +300,15 @@ class ThemeService implements ResetInterface
         foreach ($mergedFieldConfig as $fieldName => $fieldConfig) {
             $tab = $this->getTab($fieldConfig);
             $tabLabel = $this->getTabLabel($tab, $translations);
-            $tabSnippetKey = $this->buildSnippetKey($themeTechnicalName, $tab);
+            $tabSnippetKey = $this->buildLabelSnippetKey($themeTechnicalName, $tab);
 
             $block = $this->getBlock($fieldConfig);
             $blockLabel = $this->getBlockLabel($block, $translations);
-            $blockSnippetKey = $this->buildSnippetKey($themeTechnicalName, $tab, $block);
+            $blockSnippetKey = $this->buildLabelSnippetKey($themeTechnicalName, $tab, $block);
 
             $section = $this->getSection($fieldConfig);
             $sectionLabel = $this->getSectionLabel($section, $translations);
-            $sectionSnippetKey = $this->buildSnippetKey($themeTechnicalName, $tab, $block, $section);
+            $sectionSnippetKey = $this->buildLabelSnippetKey($themeTechnicalName, $tab, $block, $section);
 
             // set default tab
             $outputStructure['tabs']['default']['label'] = '';
@@ -328,7 +328,7 @@ class ThemeService implements ResetInterface
                 foreach ($custom['options'] as $optionIndex => $option) {
                     $options[] = [
                         ...$option,
-                        'labelSnippetKey' => $this->buildSnippetKey(
+                        'labelSnippetKey' => $this->buildLabelSnippetKey(
                             $themeTechnicalName,
                             $tab,
                             $block,
@@ -345,14 +345,21 @@ class ThemeService implements ResetInterface
             // add fields to sections
             $outputStructure['tabs'][$tab]['blocks'][$block]['sections'][$section]['fields'][$fieldName] = [
                 'label' => $fieldConfig['label'],
-                'labelSnippetKey' => $this->buildSnippetKey(
+                'labelSnippetKey' => $this->buildLabelSnippetKey(
                     $themeTechnicalName,
                     $tab,
                     $block,
                     $section,
-                    $fieldName
+                    $fieldName,
                 ),
                 'helpText' => $fieldConfig['helpText'] ?? null,
+                'helpTextSnippetKey' => $this->buildHelpTextSnippetKey(
+                    $themeTechnicalName,
+                    $tab,
+                    $block,
+                    $section,
+                    $fieldName,
+                ),
                 'type' => $fieldConfig['type'] ?? null,
                 'custom' => $custom,
                 'fullWidth' => $fieldConfig['fullWidth'],
@@ -566,7 +573,7 @@ class ThemeService implements ResetInterface
     /**
      * @param array<string, mixed> $translations
      *
-     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildSnippetKey` instead
+     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildLabelSnippetKey` instead
      */
     private function getTabLabel(string $tabName, array $translations): string
     {
@@ -580,7 +587,7 @@ class ThemeService implements ResetInterface
     /**
      * @param array<string, mixed> $translations
      *
-     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildSnippetKey` instead
+     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildLabelSnippetKey` instead
      */
     private function getBlockLabel(string $blockName, array $translations): string
     {
@@ -594,7 +601,7 @@ class ThemeService implements ResetInterface
     /**
      * @param array<string, mixed> $translations
      *
-     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildSnippetKey` instead
+     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildLabelSnippetKey` instead
      */
     private function getSectionLabel(string $sectionName, array $translations): string
     {
@@ -610,6 +617,8 @@ class ThemeService implements ResetInterface
      * @param array<string, mixed> $translations
      *
      * @return array<string, mixed>
+     *
+     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildHelpTextSnippetKey` instead
      */
     private function translateLabels(array $themeConfiguration, array $translations): array
     {
@@ -625,6 +634,8 @@ class ThemeService implements ResetInterface
      * @param array<string, mixed> $translations
      *
      * @return array<string, mixed>
+     *
+     * @deprecated tag:v6.8.0 - Using translations from `theme.json` will be removed, use `buildHelpTextSnippetKey` instead
      */
     private function translateHelpTexts(array $themeConfiguration, array $translations): array
     {
@@ -690,7 +701,7 @@ class ThemeService implements ResetInterface
         return $this->configService->get(self::CONFIG_THEME_COMPILE_ASYNC) && !$context->hasState(self::STATE_NO_QUEUE);
     }
 
-    private function buildSnippetKey(string $themeTechnicalName, string ...$parts): string
+    private function buildLabelSnippetKey(string $themeTechnicalName, string ...$parts): string
     {
         return implode(
             '.',
@@ -699,6 +710,19 @@ class ThemeService implements ResetInterface
                 $this->toKebabCase($themeTechnicalName),
                 ...$parts,
                 'label',
+            ],
+        );
+    }
+
+    private function buildHelpTextSnippetKey(string $themeTechnicalName, string ...$parts): string
+    {
+        return implode(
+            '.',
+            [
+                'sw-theme',
+                $this->toKebabCase($themeTechnicalName),
+                ...$parts,
+                'helpText',
             ],
         );
     }

@@ -2771,31 +2771,19 @@ You can find further details on the use on the documentation page [Shopware's tw
 Due to the lack of proper translatability and missing fallbacks, we do not intend to use `theme.json` translations anymore.
 
 A constructed snippet key is introduced in Shopware 6.7 and will be required starting Shopware 6.8. This affects `label` and `helpText` properties in the `theme.json`, which are used in the theme manager. The snippet keys are constructed as follows. The mentioned `themeName` implies the `technicalName` property of the theme in camel case:
-* Tab:
-  * `sw-theme.<technicalName>.<tabName>.label`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.label`
-  * `sw-theme.<technicalName>.<tabName>.helpText`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.helpText`
-* Block:
-  * `sw-theme.<technicalName>.<tabName>.<blockName>.label`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.label`
-  * `sw-theme.<technicalName>.<tabName>.<blockName>.helpText`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.helpText`
-* Section:
-  * `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.label`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.label`
-  * `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.helpText`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.helpText`
+* Tab: `sw-theme.<technicalName>.<tabName>.label`
+  * e.g.: `sw-theme.swag-shape-theme.colorTab.label`
+* Block: `sw-theme.<technicalName>.<tabName>.<blockName>.label`
+  * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.label`
+* Section: `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.label`
+  * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.label`
 * Field:
   * `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.<fieldName>.label`
     * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.sw-color-primary-dark.label`
   * `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.<fieldName>.helpText`
     * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.sw-color-primary-dark.helpText`
-* Options:
-  * `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.<fieldName>.<index>.label`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.sw-color-primary-dark.0.label`
-  * `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.<fieldName>.<index>.helpText`
-    * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.sw-color-primary-dark.0.helpText`
+* Options: `sw-theme.<technicalName>.<tabName>.<blockName>.<sectionName>.<fieldName>.<index>.label`
+  * e.g.: `sw-theme.swag-shape-theme.colorTab.primaryColorsBlock.homeSection.sw-color-primary-dark.0.label`
 
 ## ThemeEntity::label & ThemeEntity::helpText deprecation
 

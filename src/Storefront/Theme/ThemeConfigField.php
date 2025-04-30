@@ -22,8 +22,12 @@ class ThemeConfigField extends Struct
 
     /**
      * @var array<string, array<string, string>>|null
+     *
+     * @deprecated tag:v6.8.0 - Property will be removed. Use translations via helpTextSnippetKey instead
      */
     protected ?array $helpText = null;
+
+    protected string $helpTextSnippetKey;
 
     protected ?string $type;
 
@@ -103,6 +107,16 @@ class ThemeConfigField extends Struct
     public function setLabelSnippetKey(string $labelSnippetKey): void
     {
         $this->labelSnippetKey = $labelSnippetKey;
+    }
+
+    public function getHelpTextSnippetKey(): string
+    {
+        return $this->helpTextSnippetKey;
+    }
+
+    public function setHelpTextSnippetKey(string $helpTextSnippetKey): void
+    {
+        $this->helpTextSnippetKey = $helpTextSnippetKey;
     }
 
     public function getType(): ?string
@@ -217,17 +231,25 @@ class ThemeConfigField extends Struct
 
     /**
      * @return array<string, array<string, string>>|null
+     *
+     * @deprecated tag:v6.8.0 - Property will be removed. Use translations via helpTextSnippetKey instead
      */
     public function getHelpText(): ?array
     {
+        Feature::triggerDeprecationOrThrow('v6.8.0.0', Feature::deprecatedClassMessage(self::class, 'v6.8.0.0'));
+
         return $this->helpText;
     }
 
     /**
      * @param array<string, array<string, string>>|null $helpText
+     *
+     * @deprecated tag:v6.8.0 - Property will be removed. Use translations via helpTextSnippetKey instead
      */
     public function setHelpText(?array $helpText): void
     {
+        Feature::triggerDeprecationOrThrow('v6.8.0.0', Feature::deprecatedClassMessage(self::class, 'v6.8.0.0'));
+
         $this->helpText = $helpText;
     }
 
