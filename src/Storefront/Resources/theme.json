@@ -172,6 +172,25 @@
         "editable": true,
         "block": "media",
         "order": 500
+      },
+      "test-something-with-options": {
+        "type": "text",
+        "value": "Hello",
+        "editable": true,
+        "block": "media",
+        "order": 600,
+        "custom": {
+          "componentName": "sw-single-select",
+          "options": [
+            {
+              "value": "Hello"
+            },
+            {
+              "value": "World"
+            }
+          ]
+        },
+        "fullWidth": null
       }
     }
   }

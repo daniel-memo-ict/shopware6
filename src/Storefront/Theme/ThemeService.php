@@ -238,6 +238,7 @@ class ThemeService implements ResetInterface
                 && \is_array($item['value'])
                 && \array_key_exists($name, $configuredTheme['fields'])
             ) {
+                // ToDo
                 $configFields[$name]->setValue($configuredTheme['fields'][$name]['value']);
             }
         }
