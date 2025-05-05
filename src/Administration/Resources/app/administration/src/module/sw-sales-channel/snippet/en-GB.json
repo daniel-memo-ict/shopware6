@@ -144,6 +144,7 @@
       "ipAddressAllowlistHelpText": "Add IP addresses to the allowlist in order to allow selective access to your shop. You may add IPv4 and IPv6 addresses as needed.",
       "basicinformationLink": "Change default maintenance layout here",
       "columnDomainCurrency": "Currency",
+      "columnDomainMeasurement": "Measurement system",
       "products": {
         "titleEmptyState": "No more products found",
         "titleEmptyStateTable": "No matching products found",

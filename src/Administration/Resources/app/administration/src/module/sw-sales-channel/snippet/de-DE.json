@@ -144,6 +144,7 @@
       "basicinformationLink": "Standard-Wartungsseiten-Layout ändern",
       "ipAddressAllowlist": "Allowlist für IP-Adressen",
       "columnDomainCurrency": "Währung",
+      "columnDomainMeasurement": "Einheitssystem",
       "products": {
         "titleEmptyState": "Keine weiteren Produkte gefunden",
         "titleEmptyStateTable": "Keine passenden Produkte gefunden",

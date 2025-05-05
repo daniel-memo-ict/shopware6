@@ -45,6 +45,7 @@ async function createWrapper() {
                 'sw-category-tree-field': true,
                 'mt-select': true,
                 'sw-custom-field-set-renderer': true,
+                'sw-sales-channel-measurement': true,
             },
             provide: {
                 salesChannelService: {},
@@ -1046,4 +1047,5 @@ describe('src/module/sw-sales-channel/view/sw-sales-channel-detail-base', () => 
 
         expect(wrapper.vm.cliCommand).toBe('php bin/console product-export:generate sc-id export-id');
     });
+
 });
